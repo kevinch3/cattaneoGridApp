@@ -1,0 +1,8 @@
+{{currentContent?.title}}
+
+<div *ngIf="currentContent">
+  <audio #audioPlayer controls (timeupdate)="onTimeUpdate($event)" (ended)="onAudioEnded()">
+    <source [src]="currentContent.link" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+</div>
