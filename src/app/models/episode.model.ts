@@ -9,3 +9,10 @@ export interface Episode {
     episodio: string
     fechasubida: string
   }
+
+  export interface EpisodeSort extends Episode {
+    _fechasubida: number
+    _fecha: number
+    _descargas: number
+    _likes: number
+  }
