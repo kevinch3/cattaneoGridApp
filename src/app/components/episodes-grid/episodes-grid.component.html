@@ -1,14 +1,31 @@
 <div class="episode-grid">
+
+    <div>
+        <label for="orderby">Ordenar:</label>
+        <select (change)="onSortChange($event)">
+            <option value="_likes">Likes</option>
+            <option value="_descargas">Descargas</option>
+            <option value="_fecha">fecha</option>
+            <option value="_fechasubida">fecha subida</option>
+            <option value="_episodio">episodio</option>
+        </select>
+    </div>
+
     <ng-container *ngFor="let episode of episodes; let i = index">
-        <div class="episode-item" (click)="onEpisodeClick(i)">
+
+        <div
+        [ngStyle]="{'background-color': episode[selectedSortField]?.color }"
+        class="episode-item" (click)="onEpisodeClick(i)">
             <div class="episodio">{{ episode.episodio }}</div>
         </div>
 
-        <div *ngIf="selectedIndex === i" class="episode-detail-row">
+        <div *ngIf="selectedIndex === i" class="episode-detail-row"
+            [ngStyle]="{'background-color': episode[selectedSortField]?.color}">
             <div class="titulo">{{ episode.titulo }}</div>
             <div class="likes">Likes: {{ episode.likes }}</div>
             <div class="descargas">Descargas: {{ episode.descargas }}</div>
-            <div [innerHTML]="tracklistWithBreaks(episode.descripcion)" class="descripcion"></div>
+            <div [innerHTML]="tracklistWithBreaks(episode.tracklist)" class="tracklist"></div>
         </div>
+
       </ng-container>
 </div>

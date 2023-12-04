@@ -1,7 +1,7 @@
 
 export interface Episode {
     titulo: string
-    descripcion: string
+    tracklist: string
     link: string
     likes: string
     descargas: string
@@ -11,8 +11,15 @@ export interface Episode {
   }
 
   export interface EpisodeSort extends Episode {
-    _fechasubida: number
-    _fecha: number
-    _descargas: number
-    _likes: number
+    _fechasubida: EpisodeExtended
+    _fecha: EpisodeExtended
+    _descargas: EpisodeExtended
+    _likes: EpisodeExtended
+    [key: string]: EpisodeExtended | any; // Permite indexar con cualquier string
+  }
+
+  export interface EpisodeExtended {
+    value: string
+    number: number
+    color: string
   }

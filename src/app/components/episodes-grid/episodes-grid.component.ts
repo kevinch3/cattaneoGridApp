@@ -24,8 +24,9 @@ const dataPath = 'assets/db.json'
   styleUrl: './episodes-grid.component.scss'
 })
 export class EpisodesGridComponent implements OnInit {
-  selectedIndex: number | null = null;
-  public episodes: Episode[] = []
+  public selectedIndex: number | null = null;
+  public episodes: EpisodeSort[] = [];
+  selectedSortField: string = '_likes'; // Campo de ordenación seleccionado por defecto
 
   constructor(
     private playerService: PlayerService,
@@ -35,7 +36,7 @@ export class EpisodesGridComponent implements OnInit {
   ngOnInit(): void {
     this.episodesService.fetchEpisodes()
       .subscribe({
-        next: (data: Episode[]) => {
+        next: (data: EpisodeSort[]) => { // Asegúrate de que sea EpisodeSort[]
           this.episodes = data;
         },
         error: (error) => {
@@ -44,6 +45,12 @@ export class EpisodesGridComponent implements OnInit {
       });
   }
 
+public onSortChange(event: Event): void {
+    const selectElement = event.target as HTMLSelectElement;
+    this.selectedSortField = selectElement.value;
+    console.log('change', this.selectedSortField);
+  }
+  
   public onEpisodeClick(index: number) {
     this.selectedIndex = this.selectedIndex === index ? null : index // Esto permite alternar la fila al hacer clic
 
