@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core'
 import { CommonModule } from '@angular/common'
-import { HttpClient, HttpClientModule } from '@angular/common/http'
+import { HttpClient } from '@angular/common/http'
 import { scaleLinear } from 'd3-scale'
 import { Observable, Subject, Subscription, map, startWith, tap } from 'rxjs'
 import { EpisodePlayerComponent } from '../episode-player/episode-player.component'
@@ -16,7 +16,11 @@ const dataPath = 'assets/db.json'
   standalone: true,
   imports: [
     CommonModule,
-    HttpClientModule,
+    
+// TODO: `HttpClientModule` should not be imported into a component directly.
+// Please refactor the code to add `provideHttpClient()` call to the provider list in the
+// application bootstrap logic and remove the `HttpClientModule` import from this component.
+HttpClientModule,
     EpisodePlayerComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
