@@ -3,7 +3,11 @@ import { EpisodesGridComponent } from './components/episodes-grid/episodes-grid.
 
 export const routes: Routes = [
     {
-        path: '**',
+        path: '',
         component: EpisodesGridComponent
+    },
+    {
+        path: '**',
+        redirectTo: ''
     }
 ];

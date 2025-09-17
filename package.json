@@ -6,7 +6,10 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "build:ssr": "ng build --configuration production",
+    "serve:ssr": "node dist/cattaneo-grid-app/server/server.mjs",
+    "prerender": "ng build --configuration production --prerender"
   },
   "private": true,
   "dependencies": {
@@ -37,6 +40,7 @@
     "@types/jasmine": "~5.1.0",
     "@types/node": "^18.18.0",
     "@types/xml2js": "^0.4.14",
+    "angular-cli-ghpages": "^2.0.3",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
