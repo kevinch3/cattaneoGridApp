@@ -1,5 +1,6 @@
 @if (currentContent) {
-  <div>
+  <!-- custom player -->
+  <!-- <div>
     <mat-progress-bar mode="determinate" [value]="progress" (click)="seekAudio($event)"></mat-progress-bar>
     <div>{{ currentContent.title }}</div>
     <audio #audioPlayer (loadedmetadata)="onPlayerReady($event)" (timeupdate)="onTimeUpdate($event)" (ended)="onAudioEnded()">
@@ -10,5 +11,14 @@
     <button (click)="audioPlayerRef.nativeElement.pause()">Pause</button>
     <button (click)="stopAudio()">Stop</button>
     <input type="range" min="0" max="1" step="0.1" [(ngModel)]="volume" (ngModelChange)="onVolumeChange($event)">
+  </div> -->
+  
+  <!-- browser player -->
+  <div>
+    <h2>Now Playing: {{ currentContent.title }}</h2>
+    <audio #audioPlayer controls (loadedmetadata)="onPlayerReady($event)" (timeupdate)="onTimeUpdate($event)" (ended)="onAudioEnded()">
+      <source [src]="currentContent.link" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
   </div>
 }
