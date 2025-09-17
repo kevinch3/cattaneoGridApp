@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core'
-import { CommonModule } from '@angular/common'
+
 import { PlayerService } from '../../services/player/player.service'
 import { PlayableContent } from '../../models/playable.model'
 import { FormsModule } from '@angular/forms'
@@ -7,7 +7,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar'
 
 @Component({
     selector: 'app-episode-player',
-    imports: [CommonModule, FormsModule, MatProgressBarModule],
+    imports: [FormsModule, MatProgressBarModule],
     templateUrl: './episode-player.component.html',
     styleUrl: './episode-player.component.scss'
 })
