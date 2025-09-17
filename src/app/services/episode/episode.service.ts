@@ -32,7 +32,7 @@ export class EpisodesService {
           .range(['green', 'red']); // De verde para el valor más bajo a rojo para el más alto
         
           return episodes.map(episode => this.convertToEpisodeSort(episode, colorScaleLikes, colorScaleDescargas, colorScaleFecha, colorScaleFechasubida, colorScaleEpisodio));      }),
-      tap(data => console.log(data))
+      // tap(data => console.log(data))
     );
   }
 
