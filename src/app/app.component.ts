@@ -5,16 +5,15 @@ import { EpisodesGridComponent } from './components/episodes-grid/episodes-grid.
 import { EpisodePlayerComponent } from './components/episode-player/episode-player.component'
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [
-    CommonModule,
-    RouterOutlet,
-    EpisodesGridComponent,
-    EpisodePlayerComponent
-  ],
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+    selector: 'app-root',
+    imports: [
+        CommonModule,
+        RouterOutlet,
+        EpisodesGridComponent,
+        EpisodePlayerComponent
+    ],
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
   title = 'cattaneoGridApp';

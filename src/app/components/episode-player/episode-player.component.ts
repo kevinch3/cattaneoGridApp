@@ -6,11 +6,10 @@ import { FormsModule } from '@angular/forms'
 import { MatProgressBarModule } from '@angular/material/progress-bar'
 
 @Component({
-  selector: 'app-episode-player',
-  standalone: true,
-  imports: [CommonModule, FormsModule, MatProgressBarModule],
-  templateUrl: './episode-player.component.html',
-  styleUrl: './episode-player.component.scss'
+    selector: 'app-episode-player',
+    imports: [CommonModule, FormsModule, MatProgressBarModule],
+    templateUrl: './episode-player.component.html',
+    styleUrl: './episode-player.component.scss'
 })
 export class EpisodePlayerComponent implements OnInit {
   @ViewChild('audioPlayer') audioPlayerRef!: ElementRef<HTMLAudioElement>

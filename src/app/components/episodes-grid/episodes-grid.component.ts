@@ -8,12 +8,11 @@ import { EpisodesService } from '../../services/episode/episode.service'
 // const dataPath = 'assets/db.json'
 
 @Component({
-  selector: 'app-episodes-grid',
-  standalone: true,
-  imports: [CommonModule],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './episodes-grid.component.html',
-  styleUrl: './episodes-grid.component.scss'
+    selector: 'app-episodes-grid',
+    imports: [CommonModule],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    templateUrl: './episodes-grid.component.html',
+    styleUrl: './episodes-grid.component.scss'
 })
 export class EpisodesGridComponent implements OnInit {
   public selectedIndex: number | null = null;
