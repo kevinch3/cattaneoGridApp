@@ -1,97 +1,84 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core'
+import { Component, ElementRef, ViewChild } from '@angular/core'
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 
 import { PlayerService } from '../../services/player/player.service'
-import { PlayableContent } from '../../models/playable.model'
-import { MatProgressBarModule } from '@angular/material/progress-bar'
+import { PlayableContent, PlayerState } from '../../models/playable.model'
 
 @Component({
-    selector: 'app-episode-player',
-    imports: [MatProgressBarModule],
-    templateUrl: './episode-player.component.html',
-    styleUrl: './episode-player.component.scss'
+  selector: 'app-episode-player',
+  templateUrl: './episode-player.component.html',
+  styleUrl: './episode-player.component.scss'
 })
-export class EpisodePlayerComponent implements OnInit {
-  @ViewChild('audioPlayer') audioPlayerRef!: ElementRef<HTMLAudioElement>
-  currentContent: PlayableContent | null = null;
-  isPlaying: boolean = false;
-  currentTime: number = 0;
-  duration: number = 0;
-  volume: number = 1; // Default volume
-  progress: number = 0;
-  constructor(private playerService: PlayerService) { }
+export class EpisodePlayerComponent {
+  @ViewChild('audioPlayer')
+  set audioPlayerRef(ref: ElementRef<HTMLAudioElement> | undefined) {
+    this.audioElement = ref?.nativeElement ?? null
+    this.syncAudio()
+  }
 
-  ngOnInit(): void {
-    this.playerService.getState()
+  currentContent: PlayableContent | null = null
+
+  private audioElement: HTMLAudioElement | null = null
+  private lastState: PlayerState | null = null
+  private activeLink: string | null = null
+
+  constructor(private readonly playerService: PlayerService) {
+    this.playerService
+      .getState()
+      .pipe(takeUntilDestroyed())
       .subscribe(state => {
+        this.lastState = state
         this.currentContent = state.content
-        this.isPlaying = state.isPlaying
-        this.currentTime = state.currentTime
-
-        const audioElement = this.audioPlayerRef?.nativeElement
-        if (audioElement) {
-          // Si hay un nuevo episodio, actualiza la fuente y reproduce
-          if (this.currentContent && audioElement.src !== this.currentContent.link) {
-            audioElement.src = this.currentContent.link
-            audioElement.load() // Cargar la nueva fuente
-          }
-
-          // Manejar play/pause según el estado
-          if (this.isPlaying && audioElement.paused) {
-            audioElement.play()
-          } else if (!this.isPlaying && !audioElement.paused) {
-            audioElement.pause()
-          }
-
-          // Actualizar tiempo si es necesario
-          if (Math.abs(audioElement.currentTime - this.currentTime) > 1) {
-            audioElement.currentTime = this.currentTime
-          }
-        }
+        this.syncAudio()
       })
   }
 
-  onPlayerReady(event: Event) {
-    const audio = event.target as HTMLAudioElement
-    this.duration = audio.duration
-  }
+  onTimeUpdate(): void {
+    if (!this.audioElement || !this.lastState) {
+      return
+    }
 
-  onVolumeChange(newVolume: number) {
-    const audioElement = this.audioPlayerRef.nativeElement
-    audioElement.volume = newVolume
-  }
-
-  onTimeUpdate(event: Event) {
-    const audio = event.target as HTMLAudioElement
-    this.progress = (audio.currentTime / audio.duration) * 100
-    // Actualizar solo si la diferencia de tiempo es significativa
-    if (Math.abs(audio.currentTime - this.currentTime) > 1) {
-      this.playerService.performAction('seek', undefined, audio.currentTime)
+    const position = this.audioElement.currentTime
+    if (Math.abs(position - this.lastState.currentTime) > 1) {
+      this.playerService.performAction('seek', undefined, position)
     }
   }
 
-  public onAudioEnded() {
+  onAudioEnded(): void {
     this.playerService.performAction('stop')
   }
 
-  public playContent(content: PlayableContent) {
-    this.playerService.performAction('play', content)
+  private syncAudio(): void {
+    if (!this.audioElement || !this.lastState) {
+      return
+    }
+
+    const { content, currentTime, isPlaying } = this.lastState
+
+    if (!content) {
+      this.audioElement.pause()
+      if (this.activeLink) {
+        this.audioElement.removeAttribute('src')
+        this.audioElement.load()
+        this.activeLink = null
+      }
+      return
+    }
+
+    if (this.activeLink !== content.link) {
+      this.audioElement.src = content.link
+      this.audioElement.load()
+      this.activeLink = content.link
+    }
+
+    if (Math.abs(this.audioElement.currentTime - currentTime) > 1) {
+      this.audioElement.currentTime = currentTime
+    }
+
+    if (isPlaying && this.audioElement.paused) {
+      void this.audioElement.play()
+    } else if (!isPlaying && !this.audioElement.paused) {
+      this.audioElement.pause()
+    }
   }
-
-  public stopAudio() {
-    const audioElement = this.audioPlayerRef.nativeElement
-    audioElement.pause()
-    audioElement.currentTime = 0
-  }
-
-  public seekAudio(event: MouseEvent) {
-    const progressBar = event.currentTarget as HTMLElement;
-    const clickX = event.offsetX;
-    const totalWidth = progressBar.clientWidth;
-    const clickRatio = clickX / totalWidth;
-    const audioElement = this.audioPlayerRef.nativeElement;
-    const newTime = clickRatio * audioElement.duration;
-
-    audioElement.currentTime = newTime;
-  }
-
 }

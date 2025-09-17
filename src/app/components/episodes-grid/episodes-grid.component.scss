@@ -1,7 +1,6 @@
 .episode-grid{
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    grid-gap: 5px; /* Agrega un espacio entre las filas y columnas si es necesario */  
     .episode-item{
         display: grid;
         padding: 0;
@@ -14,8 +13,6 @@
         align-content: center;
         .titulo{
             white-space: nowrap;
-            // overflow: hidden;
-            // text-overflow: ellipsis;
         }
         .episodio{
             text-align: center;
