@@ -1,28 +1,16 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core'
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core'
 import { CommonModule } from '@angular/common'
-import { HttpClient } from '@angular/common/http'
-import { scaleLinear } from 'd3-scale'
-import { Observable, Subject, Subscription, map, startWith, tap } from 'rxjs'
-import { EpisodePlayerComponent } from '../episode-player/episode-player.component'
 import { PlayerService } from '../../services/player/player.service'
-import { Episode, EpisodeSort } from '../../models/episode.model'
+import { EpisodeSort } from '../../models/episode.model'
 import { PlayableContent } from '../../models/playable.model'
 import { EpisodesService } from '../../services/episode/episode.service'
 
-const dataPath = 'assets/db.json'
+// const dataPath = 'assets/db.json'
 
 @Component({
   selector: 'app-episodes-grid',
   standalone: true,
-  imports: [
-    CommonModule,
-    
-// TODO: `HttpClientModule` should not be imported into a component directly.
-// Please refactor the code to add `provideHttpClient()` call to the provider list in the
-// application bootstrap logic and remove the `HttpClientModule` import from this component.
-HttpClientModule,
-    EpisodePlayerComponent
-  ],
+  imports: [CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './episodes-grid.component.html',
   styleUrl: './episodes-grid.component.scss'
@@ -52,7 +40,7 @@ export class EpisodesGridComponent implements OnInit {
 public onSortChange(event: Event): void {
     const selectElement = event.target as HTMLSelectElement;
     this.selectedSortField = selectElement.value;
-    console.log('change', this.selectedSortField);
+    // console.log('change', this.selectedSortField);
   }
   
   public onEpisodeClick(index: number) {
