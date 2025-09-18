@@ -9,7 +9,9 @@
     "test": "ng test",
     "build:ssr": "ng build --configuration production",
     "serve:ssr": "node dist/cattaneo-grid-app/server/server.mjs",
-    "prerender": "ng build --configuration production --prerender"
+    "prerender": "ng build --configuration production --prerender",
+    "prerender:gh": "ng build --configuration production --prerender --base-href=/cattaneoGridApp/",
+    "deploy:gh": "npm run prerender:gh && npx angular-cli-ghpages --dir=dist/cattaneo-grid-app/browser --branch=gh-pages"
   },
   "private": true,
   "dependencies": {
